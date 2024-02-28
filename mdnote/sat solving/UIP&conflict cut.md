@@ -91,7 +91,7 @@ conflict vertex ⊥属于B.
 
 ![_images/ig-2.png](./attachments/ig-2-1699127330027-31.png)
 
-* 下图所示的冲突切割不是唯一蕴含冲突切割, 因为集合B含有除唯一蕴含点$\overline{x_6}$的后继以外的节点$x_1$.
+* 下图所示的冲突切割不是唯一蕴含冲突切割, 因为集合B含有除唯一蕴含点$\overline{x_6}$的后继以外的节点 ($x_1$的后续节点).
 
   ![_images/ig-2-cut-1.png](./attachments/ig-2-cut-1.png)
 
@@ -114,9 +114,14 @@ conflict vertex ⊥属于B.
 经过学习之后, CDCL算法现在进行非时序性回溯：
 
 1. 令m是**C**的**literal中第二深的决策层**(如果C中的文字全部都是一个决策层, 则m = 0); 
+
 2. 从**迹**中**删除所有决策层大于m的literal**. 
 
-**论断** C中有且仅有一个文字属于最近的一个决策层. 
+   (即如果learned clause中只有一个literal, 则返回第0决策层)
+
+**论断** C中**有且仅有一个文字literal**属于**最近的一个决策层**. 
+
+因为是 UIP cut, 所以A中和B相连的最高决策层只有UIP这一个点, 即learned clause中属于最近的决策层只有一个literal
 
 **推论** 若C中的文字全部都是一个决策层, 则C只有一个literal
 
@@ -181,14 +186,17 @@ $$
 
    最近一次做决策的节点是$\overline e$, 它同时也是唯一蕴含点. $A=\{a,\overline e\}$, $B=\{f,\perp\}$, 原因集$R=\{a,\overline e\}$, 学到的子句$C=(\neg a\lor e)$, 其中a在第0层$\overline e$在第1层, $m=1$, 回溯到第0层. 
 
-7. 在决策层0, 利用子句$(a)$进行对学到的子句$C=(\neg a\lor e)$单位传播, 得到$(e)$. 再进行单位传播, 根据子句$(\neg e\lor\neg f)$知道f为假, 此时迹为$a^{(a)}\cdot e^{(\neg a\lor e)}\cdot\neg f^{(\neg e\lor\neg f)}$. 而CNF中的最后一个子句是$(\neg a\lor\neg e\lor f)$, 得不到满足, 所以我们在决策层0发现了矛盾, 这意味着该CNF是不可满足的.
+7. 在决策层0, 利用子句$(a)$进行对学到的子句$C=(\neg a\lor e)$单位传播, 得到$(e)$. 再进行单位传播, 根据子句$(\neg e\lor\neg f)$知道f为假, 此时迹为$a^{(a)}\cdot e^{(\neg a\lor e)}\cdot\neg f^{(\neg e\lor\neg f)}$. 而CNF中的最后一个子句是$(\neg a\lor\neg e\lor f)$, 得不到满足, 所以我们在**决策层0发现了矛盾**, 这意味着该**CNF**是**不可满足**的.
 
 ***
 
 ## satisfiable & unsatisfiable
 
 * For ***satisfiable formulas***, the CDCL algorithm eventually finds a satisfying truth assignment because the learned clauses preserve them.
+
 * For ***unsatisfiable formulas***, the algorithm eventually reports “unsatisfiable” because each conflict results in a new learned clause. There are only finitely many possible clauses and thus the algorithm will produce enough unary clauses at some point for a <u>**level 0 conflict** marking unsatisfiability.</u>
+
+  **决策层0的conflict ==> unsatisfiability**
 
 
 

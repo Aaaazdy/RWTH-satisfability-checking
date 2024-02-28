@@ -27,12 +27,12 @@ SAT solver chaff[[2\]](https://zhuanlan.zhihu.com/p/465917163#ref_2) 提出了�
 
 每一个变量x有两个list列表: 
 
-1. **pos_watched(x)**中存放着被监视的**x的位置**，**当x被赋值为0**时<u>会被考虑</u>。
-2. **neg_watched(x)**中存放着被监视**¬x的位置**，**当x被赋值为1**时<u>会被考虑</u>。
+1. **pos_watched(x)**中存放着被监视的**x的位置(即x以x作为literal出现的clause位置)**，**当x被赋值为0**时<u>会被考虑</u>。
+2. **neg_watched(x)**中存放着被监视**¬x的位置(即x以¬x作为literal出现的clause位置)**，**当x被赋值为1**时<u>会被考虑</u>。
 
-**当发生赋值的时候**，我们**检查对应的列表中的每一个元素p，在p所在的子句中寻找一个新的非零字面量**。可能会发生以下情况：
+**当发生赋值的时候**，我们**检查对应的列表中的每一个位置p(当x被赋值为0时考虑pos_watched(x), 当x被赋值为1时考虑neg_watched(x),即检查会被赋值为0的literal)，在p所在的子句中寻找一个新的非零字面量**。可能会发生以下情况：
 
-1. **找到**一个与被观察的两个字面量不同的**非零字面量y**。用它替换p，然后更新list（从pos/neg_watched(x)中删掉p, 在**pos/neg_watched(y)中加入p**。这是唯一watching literal会被改动的情况。
+1. **找到**一个与被观察的两个字面量不同的**非零字面量y**。然后将位置p从x的literal watching中删除，加入y的literal watching(从pos/neg_watched(x)中删掉p, 在**pos/neg_watched(y)中加入p**)。这是唯一watching literal会被改动的情况。
 2. **唯一的非零变量y是另一个watched literal**。如果**y的值是1**，那么**什么都不需要做**.
 3. **唯一的非零变量y是另一个watched literal**。如果**y是自由字面量**，则**这个子句是单位子句**, 我们提醒求解器赋值, **y将被赋值为1**。
 4. **所有字面量的值都为0**，不存在y，这个子句为**冲突子句(conflict)**。

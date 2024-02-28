@@ -50,7 +50,7 @@
 
 ![img](./attachments/v2-632e10bf727dbc5bc5dd2fd0a5f9a1d6_r.jpg)
 
-> 图中**实线为manual decision**, **虚线则为BCP对变量的赋值**. 若BCP无法使CNF为真, 则退回并修改manual decision的决策(若之前赋值为真则反之赋值为假).
+> 图中**实线为manual decision**, **虚线则为BCP对变量的赋值**. 实线会增加decision level, 而虚线则不会增加decision  level. 若BCP无法使CNF为真, 则退回并修改manual decision的决策(若之前赋值为真则反之赋值为假).
 
 (原文这里又是一个可互动的例子，而且是非常重要的例子，把 DPLL 算法从头到尾走了一遍。请到原文[^原文]处查看。）
 
